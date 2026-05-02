@@ -42,6 +42,10 @@ gradlePlugin {
             id = "eatbee.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
+        register("androidCoil") {
+            id = "eatbee.android.coil"
+            implementationClass = "AndroidCoilConventionPlugin"
+        }
         register("androidHilt") {
             id = "eatbee.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
