@@ -1,0 +1,45 @@
+package com.eatbee.presentation.navigation
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.eatbee.presentation.ui.screen.EatBeeScreen
+import com.eatbee.presentation.ui.screen.splash.SplashScreen
+
+@Composable
+fun EatBeeNavHost() {
+    val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = ScreenRouteDef.Splash
+        ) {
+            composable<ScreenRouteDef.Splash> {
+                SplashScreen(
+                    modifier = Modifier.padding(paddingValues),
+                ) {
+                    navController.navigate(ScreenRouteDef.Main) {
+                        popUpTo(ScreenRouteDef.Splash) { inclusive = true }
+                    }
+                }
+            }
+
+            composable<ScreenRouteDef.Main> {
+                EatBeeScreen(
+                    modifier = Modifier.padding(paddingValues)
+                )
+            }
+        }
+    }
+}
