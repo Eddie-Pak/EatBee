@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.eatbee.android.library)
     alias(libs.plugins.eatbee.android.hilt)
     alias(libs.plugins.eatbee.android.network)
+    alias(libs.plugins.eatbee.android.dataStore)
+    alias(libs.plugins.eatbee.android.room)
 }
 
 android {
