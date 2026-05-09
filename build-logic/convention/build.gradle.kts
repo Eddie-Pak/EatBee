@@ -54,6 +54,14 @@ gradlePlugin {
             id = "eatbee.android.network"
             implementationClass = "AndroidNetworkConventionPlugin"
         }
+        register("androidDataStore") {
+            id = "eatbee.android.dataStore"
+            implementationClass = "AndroidDataStoreConventionPlugin"
+        }
+        register("androidRoom") {
+            id = "eatbee.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "eatbee.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
