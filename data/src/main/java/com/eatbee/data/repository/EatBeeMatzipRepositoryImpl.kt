@@ -1,6 +1,5 @@
 package com.eatbee.data.repository
 
-import android.util.Log.e
 import androidx.room.withTransaction
 import com.eatbee.data.local.dao.EatBeeMatzipDao
 import com.eatbee.data.local.database.EatBeeMatzipDatabase
