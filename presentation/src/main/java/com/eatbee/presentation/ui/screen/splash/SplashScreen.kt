@@ -16,19 +16,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.eatbee.presentation.R
+import com.eatbee.presentation.common.SplashEvent
 import com.eatbee.presentation.ui.theme.EatBeeTheme
-import kotlinx.coroutines.delay
+import com.eatbee.presentation.ui.viewmodel.SplashViewModel
 
 @Composable
 fun SplashScreen(
     modifier: Modifier,
-    goMain: () -> Unit
+    viewModel: SplashViewModel = hiltViewModel(),
+    onShowError: (String) -> Unit,
+    goMain: () -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        delay(1200)
-        goMain()
+    LaunchedEffect(viewModel.splashEvent) {
+        viewModel.splashEvent.collect { event ->
+            when (event) {
+                is SplashEvent.NavigateToMain -> goMain()
+                is SplashEvent.ShowError -> {
+                    onShowError(event.message)
+                    goMain()
+                }
+            }
+        }
     }
 
     EatBeeTheme {
