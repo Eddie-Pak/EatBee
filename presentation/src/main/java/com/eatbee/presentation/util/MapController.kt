@@ -1,16 +1,22 @@
 package com.eatbee.presentation.util
 
 import com.eatbee.domain.model.EatBeeMatzip
+import com.eatbee.presentation.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 
 class MapController {
     private var naverMap: NaverMap? = null
 
     private val activeMarkers = mutableListOf<Marker>()
+
+    private val eatBeeMarkerImage by lazy {
+        OverlayImage.fromResource(R.drawable.image_map_marker)
+    }
 
     fun setMap(naverMap: NaverMap, matzipList: List<EatBeeMatzip>) {
         this.naverMap = naverMap
@@ -40,6 +46,10 @@ class MapController {
             val marker = Marker().apply {
                 position = LatLng(matzip.mapy, matzip.mapx)
                 captionText = matzip.title
+                icon = eatBeeMarkerImage
+                width = 110
+                height = 140
+
                 this.map = map
 
                 setOnClickListener {
