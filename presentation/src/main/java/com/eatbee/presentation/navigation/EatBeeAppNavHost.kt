@@ -45,7 +45,12 @@ fun EatBeeNavHost() {
 
             composable<ScreenRouteDef.Main> {
                 EatBeeScreen(
-                    modifier = Modifier.padding(paddingValues)
+                    modifier = Modifier.padding(paddingValues),
+                    showSnackBar = { message ->
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(message)
+                        }
+                    }
                 )
             }
         }

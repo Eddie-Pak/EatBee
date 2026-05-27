@@ -37,6 +37,17 @@ class MapController {
         map.moveCamera(CameraUpdate.scrollTo(initialPosition).animate(CameraAnimation.Easing))
     }
 
+    fun updateCurrentLocation(latLng: LatLng) {
+        val map = naverMap ?: return
+
+        map.moveCamera(CameraUpdate.scrollTo(latLng).animate(CameraAnimation.Easing))
+
+        map.locationOverlay.apply {
+            isVisible = true
+            position = latLng
+        }
+    }
+
     fun updateMarkers(matzipList: List<EatBeeMatzip>) {
         val map = naverMap ?: return
 
