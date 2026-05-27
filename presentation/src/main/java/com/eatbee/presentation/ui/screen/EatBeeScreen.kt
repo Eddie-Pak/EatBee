@@ -1,15 +1,20 @@
 package com.eatbee.presentation.ui.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.eatbee.presentation.common.EatBeeEvent
+import com.eatbee.presentation.common.EatBeeMapEvent
+import com.eatbee.presentation.ui.component.MyLocationButton
+import com.eatbee.presentation.ui.theme.EatBeeDimens
 import com.eatbee.presentation.ui.theme.EatBeeTheme
 import com.eatbee.presentation.ui.viewmodel.MainViewModel
 import com.eatbee.presentation.util.AppPermissions
@@ -50,8 +55,11 @@ fun EatBeeScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collectLatest { event ->
             when (event) {
-                is EatBeeEvent.ShowSnackBar -> {
+                is EatBeeMapEvent.ShowSnackBar -> {
                     showSnackBar(event.message)
+                }
+                is EatBeeMapEvent.MoveCamera -> {
+                    mapController.moveCamera(event.location)
                 }
             }
         }
@@ -68,22 +76,30 @@ fun EatBeeScreen(
     }
 
     EatBeeTheme {
-        AndroidView(
-            modifier = modifier.fillMaxSize(),
-            factory = {
-                mapView.apply {
-                    getMapAsync { naverMap ->
-                        mapController.setMap(naverMap, eatbeeMapUiState.matzipList)
+        Box(
+            modifier = modifier.fillMaxSize()
+        ) {
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = {
+                    mapView.apply {
+                        getMapAsync { naverMap ->
+                            mapController.setMap(naverMap, eatbeeMapUiState.matzipList)
 
-                        eatbeeMapUiState.currentLocation?.let { location ->
-                            mapController.updateCurrentLocation(location)
+                            eatbeeMapUiState.currentLocation?.let { location ->
+                                mapController.updateCurrentLocation(location)
+                            }
                         }
                     }
-                }
-            },
-            update = { view ->
+                },
+            )
 
+            MyLocationButton(
+                Modifier.align(Alignment.BottomEnd)
+                    .padding(EatBeeDimens.Padding.Medium)
+            ) {
+                locationPermissionLauncher.launch(AppPermissions.location)
             }
-        )
+        }
     }
 }

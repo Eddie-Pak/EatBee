@@ -26,9 +26,7 @@ class MapController {
 
     private fun setupMapSettings(map: NaverMap) {
         map.uiSettings.apply {
-            isCompassEnabled = true
-            isScaleBarEnabled = true
-            isLocationButtonEnabled = false
+            isZoomControlEnabled = false
         }
 
         map.minZoom = 5.5
@@ -38,14 +36,14 @@ class MapController {
     }
 
     fun updateCurrentLocation(latLng: LatLng) {
-        val map = naverMap ?: return
-
-        map.moveCamera(CameraUpdate.scrollTo(latLng).animate(CameraAnimation.Easing))
-
-        map.locationOverlay.apply {
+        naverMap?.locationOverlay?.apply {
             isVisible = true
             position = latLng
         }
+    }
+
+    fun moveCamera(latLng: LatLng) {
+        naverMap?.moveCamera(CameraUpdate.scrollTo(latLng).animate(CameraAnimation.Easing))
     }
 
     fun updateMarkers(matzipList: List<EatBeeMatzip>) {

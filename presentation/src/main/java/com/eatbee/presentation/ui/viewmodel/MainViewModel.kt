@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.eatbee.domain.common.AppResult
 import com.eatbee.domain.location.LocationTracker
 import com.eatbee.domain.usecase.GetAllMatzipUseCase
-import com.eatbee.presentation.common.EatBeeEvent
+import com.eatbee.presentation.common.EatBeeMapEvent
 import com.eatbee.presentation.common.EatBeeMapUiState
 import com.naver.maps.geometry.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,18 +41,20 @@ class MainViewModel @Inject constructor(
         initialValue = EatBeeMapUiState()
     )
 
-    private val _uiEvent = Channel<EatBeeEvent>()
+    private val _uiEvent = Channel<EatBeeMapEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun getCurrentLocation() {
         viewModelScope.launch {
             when (val result = locationTracker.getCurrentLocation()) {
                 is AppResult.Success -> {
-                    _currentLocation.value = LatLng(result.data.first, result.data.second)
+                    val latLng = LatLng(result.data.first, result.data.second)
+                    _currentLocation.value = latLng
+                    _uiEvent.send(EatBeeMapEvent.MoveCamera(latLng))
                 }
 
                 is AppResult.Error -> {
-                    _uiEvent.send(EatBeeEvent.ShowSnackBar("현재위치를 표시할 수 없습니다. 잠시 후 시도해주세요."))
+                    _uiEvent.send(EatBeeMapEvent.ShowSnackBar("현재위치를 표시할 수 없습니다. 잠시 후 시도해주세요."))
                 }
 
                 else -> {}
