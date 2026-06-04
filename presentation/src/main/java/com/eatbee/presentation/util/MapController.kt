@@ -18,10 +18,16 @@ class MapController {
         OverlayImage.fromResource(R.drawable.image_map_marker)
     }
 
-    fun setMap(naverMap: NaverMap, matzipList: List<EatBeeMatzip>) {
+    fun setMap(
+        naverMap: NaverMap,
+        matzipList: List<EatBeeMatzip>,
+        onMarkerClick: (EatBeeMatzip) -> Unit
+    ) {
         this.naverMap = naverMap
         setupMapSettings(naverMap)
-        updateMarkers(matzipList)
+        updateMarkers(matzipList) {
+            onMarkerClick(it)
+        }
     }
 
     private fun setupMapSettings(map: NaverMap) {
@@ -46,7 +52,10 @@ class MapController {
         naverMap?.moveCamera(CameraUpdate.scrollTo(latLng).animate(CameraAnimation.Easing))
     }
 
-    fun updateMarkers(matzipList: List<EatBeeMatzip>) {
+    fun updateMarkers(
+        matzipList: List<EatBeeMatzip>,
+        onMarkerClick: (EatBeeMatzip) -> Unit
+        ) {
         val map = naverMap ?: return
 
         clearMarkers()
@@ -62,6 +71,7 @@ class MapController {
                 this.map = map
 
                 setOnClickListener {
+                    onMarkerClick(matzip)
                     true
                 }
             }

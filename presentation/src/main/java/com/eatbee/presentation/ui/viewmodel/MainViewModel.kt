@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eatbee.domain.common.AppResult
 import com.eatbee.domain.location.LocationTracker
+import com.eatbee.domain.model.EatBeeMatzip
 import com.eatbee.domain.usecase.GetAllMatzipUseCase
 import com.eatbee.presentation.common.EatBeeMapEvent
 import com.eatbee.presentation.common.EatBeeMapUiState
@@ -59,6 +60,14 @@ class MainViewModel @Inject constructor(
 
                 else -> {}
             }
+        }
+    }
+
+    fun onMatzipClick(matzip: EatBeeMatzip) {
+        viewModelScope.launch {
+            val targetLocation = LatLng(matzip.mapy, matzip.mapx)
+
+            _uiEvent.send(EatBeeMapEvent.MoveCamera(targetLocation))
         }
     }
 }
