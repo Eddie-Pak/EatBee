@@ -26,7 +26,7 @@ fun MatzipCard(
                 horizontal = EatBeeDimens.Padding.Large,
                 vertical = EatBeeDimens.Padding.Small
             ),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(EatBeeDimens.Elevation.Low),
         onClick = { onItemClick(matzip) }
     ) {
@@ -57,7 +57,7 @@ fun MatzipCard(
             Text(
                 text = matzip.link,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

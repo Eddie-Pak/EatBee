@@ -46,4 +46,8 @@ object EatBeeDimens {
         val Medium = 4.dp
         val High = 8.dp
     }
+
+    object Height {
+        val BottomSheetPeekHeight = 150.dp
+    }
 }
