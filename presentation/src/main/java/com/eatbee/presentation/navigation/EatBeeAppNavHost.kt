@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.eatbee.presentation.ui.screen.EatBeeScreen
+import com.eatbee.presentation.ui.screen.main.EatBeeScreen
 import com.eatbee.presentation.ui.screen.splash.SplashScreen
 import kotlinx.coroutines.launch
 
@@ -46,6 +46,7 @@ fun EatBeeNavHost() {
             composable<ScreenRouteDef.Main> {
                 EatBeeScreen(
                     modifier = Modifier.padding(paddingValues),
+                    coroutineScope = coroutineScope,
                     showSnackBar = { message ->
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(message)

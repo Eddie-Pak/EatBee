@@ -27,14 +27,17 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _currentLocation = MutableStateFlow<LatLng?>(null)
+    private val _selectedMatzip = MutableStateFlow<EatBeeMatzip?>(null)
 
     val eatbeeMapUiState: StateFlow<EatBeeMapUiState> = combine(
         getAllMatzipUseCase(),
-        _currentLocation
-    ) { matzips, location ->
+        _currentLocation,
+        _selectedMatzip
+    ) { matzips, location, selectedMatzip ->
         EatBeeMapUiState(
             matzipList = matzips,
-            currentLocation = location
+            currentLocation = location,
+            selectedMatzip = selectedMatzip
         )
     }.stateIn(
         scope = viewModelScope,
@@ -67,7 +70,16 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val targetLocation = LatLng(matzip.mapy, matzip.mapx)
 
+            _selectedMatzip.value = matzip
+            _uiEvent.send(EatBeeMapEvent.ShrinkBottomSheet)
             _uiEvent.send(EatBeeMapEvent.MoveCamera(targetLocation))
+        }
+    }
+
+    fun onBackFromDetail() {
+        viewModelScope.launch {
+            _selectedMatzip.value = null
+            _uiEvent.send(EatBeeMapEvent.ExpandBottomSheet)
         }
     }
 }

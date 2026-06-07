@@ -5,4 +5,6 @@ import com.naver.maps.geometry.LatLng
 sealed class EatBeeMapEvent {
     data class ShowSnackBar(val message: String) : EatBeeMapEvent()
     data class MoveCamera(val location: LatLng) : EatBeeMapEvent()
+    data object ShrinkBottomSheet : EatBeeMapEvent()
+    data object ExpandBottomSheet : EatBeeMapEvent()
 }
