@@ -42,6 +42,10 @@ gradlePlugin {
             id = "eatbee.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
+        register("androidCoil") {
+            id = "eatbee.android.coil"
+            implementationClass = "AndroidCoilConventionPlugin"
+        }
         register("androidHilt") {
             id = "eatbee.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
@@ -49,6 +53,14 @@ gradlePlugin {
         register("androidNetwork") {
             id = "eatbee.android.network"
             implementationClass = "AndroidNetworkConventionPlugin"
+        }
+        register("androidDataStore") {
+            id = "eatbee.android.dataStore"
+            implementationClass = "AndroidDataStoreConventionPlugin"
+        }
+        register("androidRoom") {
+            id = "eatbee.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
         }
         register("jvmLibrary") {
             id = "eatbee.jvm.library"
