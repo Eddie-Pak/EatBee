@@ -34,9 +34,6 @@ fun EatBeeScreen(
     showSnackBar: (String) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-
-    SystemBarsUtils()
-
     val eatbeeMapUiState by viewModel.eatbeeMapUiState.collectAsStateWithLifecycle()
 
     val mapController = remember { MapController() }
@@ -45,8 +42,25 @@ fun EatBeeScreen(
         initialValue = SheetValue.PartiallyExpanded
     )
 
-    BackHandler(enabled = eatbeeMapUiState.selectedMatzip != null) {
-        viewModel.onBackFromDetail()
+    if (eatbeeMapUiState.selectedMatzip == null && sheetState.currentValue == SheetValue.PartiallyExpanded) {
+        SystemBarsUtils(false)
+    } else {
+        SystemBarsUtils()
+    }
+
+    BackHandler(
+        eatbeeMapUiState.selectedMatzip != null
+                || sheetState.currentValue == SheetValue.Expanded
+    ) {
+        when {
+            eatbeeMapUiState.selectedMatzip != null -> {
+                viewModel.onBackFromDetail()
+            }
+
+            sheetState.currentValue == SheetValue.Expanded -> {
+                coroutineScope.launch { sheetState.partialExpand() }
+            }
+        }
     }
 
     val locationPermissionLauncher = checkLocationPermission(
